@@ -3,6 +3,10 @@
 
 #this is CMakeLists.txt for mqtt_client_sample
 
+find_package(Threads REQUIRED)
+find_package(OpenSSL REQUIRED)
+find_package(CURL REQUIRED)
+
 set(mqtt_client_sample_c_files
     mqtt_client_sample.c
 )
@@ -44,10 +48,11 @@ if (WIN32)
 else()
     target_link_libraries(mqtt_client_sample 
         aziotsharedutil
-        pthread
+        ${CMAKE_THREAD_LIBS_INIT}
+        ${CURL_LIBRARIES}
         umqtt)
     #if(${use_openssl})
-        target_link_libraries(mqtt_client_sample ssl crypto)
+        target_link_libraries(mqtt_client_sample ${OPENSSL_LIBRARIES})
     #endif()
 endif()
 
